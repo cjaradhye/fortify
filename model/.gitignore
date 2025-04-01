@@ -9,5 +9,6 @@ web_modules/
 .npm
 myenv/
 source/
-secure.csv/
-vulnerable.csv/
+secure.csv
+vulnerable.csv
+model_artifacts/
