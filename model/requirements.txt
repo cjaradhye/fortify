@@ -1,3 +1,9 @@
 numpy
 pandas
-sklearn
+os
+dotenv
+virtualenv
+transformers
+tensorflow
+scikit-learn
+torch
