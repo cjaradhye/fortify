@@ -4,7 +4,7 @@ body{
   overscroll-behavior:none ;
 }
 
-#root{
+.plswork{
   /* min-height: 100vh; */
   min-width: 100vw;
   background-color: #1f1f1f;

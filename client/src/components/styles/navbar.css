@@ -1,3 +1,35 @@
+
+.eh{
+    text-decoration: none;
+    color: #000;
+}
+.eh:hover{
+    text-decoration: none;
+    color: #FF6500;
+}
+
+.register-button:hover{
+    background-color: #00CFFF;
+}
+
+.register-button {
+    background-color: #00CFFF;
+    color: #000;
+    right: 0;
+    font-family: "Orbitron";
+    font-size: 1.5rem;
+    height: 50px;
+    width: 200px;
+    margin-right: 50px;
+    position: absolute;
+    margin: 20px 0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
 .sol-navbar{
     height: 100px;
     width: 85vw;
@@ -44,3 +76,47 @@
     color: #FF6500;
 }
 
+/* Existing styles remain unchanged */
+
+/* Hamburger menu button */
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    color: #EAEAEA;
+}
+
+/* Mobile Navigation */
+@media screen and (max-width: 768px) {
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        right: 20px;
+        background-color: rgba(31, 31, 31, 0.95);
+        width: 200px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        text-align: center;
+    }
+
+    .navbar-links.open {
+        display: flex;
+    }
+
+    .navlink {
+        display: block;
+        padding: 10px 0;
+        font-size: 1.2rem;
+    }
+
+    .hamburger {
+        display: block;
+    }
+}
