@@ -1,0 +1,46 @@
+.sol-navbar{
+    height: 100px;
+    width: 85vw;
+    position: fixed;
+    background-color: #1f1f1f;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    padding: 0px 20px;
+}
+.mainlogo{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    height: 50px;
+    padding: 10px;
+}
+.navlink:hover{
+    color: #00CFFF;
+}
+.navlink{
+    color: #EAEAEA;
+}
+.navlink:active{
+    color: #EAEAEA;
+}
+.navbar-links{
+    display: flex;
+    margin: auto;
+    border-radius: 10px;
+    /* background-color: grey; */
+    gap: 100px;
+    height: 40px;
+    align-items: center;
+    padding: 0px 40px;
+    background: rgba( 255, 255, 255, 0.1 );
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    backdrop-filter: blur( 14.5px );
+    -webkit-backdrop-filter: blur( 14.5px );
+    border-radius: 10px;
+}
+
+.active{
+    color: #FF6500;
+}
+

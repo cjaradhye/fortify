@@ -1,98 +1,171 @@
 import { useState, useEffect, useRef } from "react";
+import "./styles/styles.css";
 
 const SolidityIDE = () => {
     const [code, setCode] = useState(`pragma solidity ^0.8.0;\n\ncontract MyContract {\n    string public greeting = "Hello, World!";\n}`);
-    const [output, setOutput] = useState("");
+    const [output, setOutput] = useState("Initializing compiler...");
     const [isCompiling, setIsCompiling] = useState(false);
-    const [compilerLoaded, setCompilerLoaded] = useState(false);
+    const [compilerState, setCompilerState] = useState("loading");
     const workerRef = useRef(null);
+    const textareaRef = useRef(null);
+    const lineNumbersRef = useRef(null);
+
+    // Function to update line numbers
+    const updateLineNumbers = () => {
+        const lines = code.split('\n').length;
+        const lineNumbers = [];
+        for (let i = 1; i <= lines; i++) {
+            lineNumbers.push(<div key={i}>{i}</div>);
+        }
+        return lineNumbers;
+    };
 
     useEffect(() => {
-        // Create worker
-        const worker = new Worker(new URL('./solc.worker.js', import.meta.url), {
-            type: 'classic' // Use classic worker type
-          });
-        workerRef.current = worker;
+        // Check for WebAssembly support
+        if (!window.WebAssembly || !WebAssembly.instantiate) {
+            setCompilerState('error');
+            setOutput("WebAssembly is not supported in this browser.");
+            return;
+        }
+
+        // Scroll synchronization
+        const textarea = textareaRef.current;
+        const lineNumbers = lineNumbersRef.current;
+
+        const handleScroll = () => {
+            if (lineNumbers) {
+                lineNumbers.scrollTop = textarea.scrollTop;
+            }
+        };
+
+        if (textarea) {
+            textarea.addEventListener('scroll', handleScroll);
+        }
+
+        // Create worker safely
+        let worker;
+        try {
+            worker = new Worker(new URL('./solc.worker.js', import.meta.url));
+            workerRef.current = worker;
+        } catch (error) {
+            setCompilerState('error');
+            setOutput(`Failed to initialize worker: ${error.message}`);
+            return;
+        }
+        
+        // Set timeout for compiler loading
+        const loadingTimeout = setTimeout(() => {
+            if (compilerState === 'loading') {
+                setCompilerState('error');
+                setOutput("Compiler loading timed out. Please refresh the page.");
+            }
+        }, 30000);
 
         worker.onmessage = (e) => {
-            if (e.data.type === 'READY') {
-                setCompilerLoaded(true);
-                setOutput("Compiler ready. You can compile now.");
-                return;
-            }
-
-            setIsCompiling(false);
-            if (e.data.error) {
-                setOutput(`Error: ${e.data.error}`);
-            } else {
-                setOutput(JSON.stringify(e.data.output, null, 2));
+            switch (e.data.type) {
+                case 'READY':
+                    clearTimeout(loadingTimeout);
+                    setCompilerState('ready');
+                    setOutput("Compiler ready. Click 'Compile' to compile your code.");
+                    break;
+                case 'COMPILED':
+                    setIsCompiling(false);
+                    setOutput(JSON.stringify(e.data.output, null, 2));
+                    break;
+                case 'ERROR':
+                    setIsCompiling(false);
+                    if (compilerState === 'loading') {
+                        clearTimeout(loadingTimeout);
+                        setCompilerState('error');
+                    }
+                    setOutput(`Error: ${e.data.message}`);
+                    break;
+                default:
+                    break;
             }
         };
 
         worker.onerror = (error) => {
-            setIsCompiling(false);
+            clearTimeout(loadingTimeout);
+            setCompilerState('error');
             setOutput(`Worker error: ${error.message}`);
         };
 
         return () => {
-            worker.terminate();
+            clearTimeout(loadingTimeout);
+            if (textarea) textarea.removeEventListener('scroll', handleScroll);
+            if (worker) worker.terminate();
         };
     }, []);
 
     const compileSolidity = () => {
-        if (!compilerLoaded) {
-            setOutput("Compiler still loading...");
+        if (compilerState !== 'ready') {
+            setOutput(compilerState === 'loading' 
+                ? "Compiler still loading... Please wait." 
+                : "Compiler failed to load. Please refresh the page.");
             return;
         }
         
-        if (isCompiling) {
-            setOutput("Already compiling...");
+        if (!workerRef.current) {
+            setOutput("Worker not initialized. Please refresh the page.");
             return;
         }
-
+        
         setIsCompiling(true);
         setOutput("Compiling...");
-        
         workerRef.current.postMessage({
+            type: 'COMPILE',
             code: code
         });
     };
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'monospace' }}>
-            <h1>Solidity IDE</h1>
-            <textarea
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                rows={15}
-                cols={80}
-                style={{ padding: '10px', fontSize: '14px' }}
-            />
+        <div className="solidity-thingy" style={{ padding: '20px', fontFamily: 'monospace' }}>
+            <div className="code-container">
+                <div className="header-editor">
+                    <h3>Solidity.sol</h3>
+                    <div className="my-button">
+                        {compilerState === 'error' && (
+                            <button 
+                                onClick={() => window.location.reload()}
+                                className="refresh-button"
+                            >
+                                Refresh Page
+                            </button>
+                        )}
+                        <button 
+                            onClick={compileSolidity}
+                            disabled={isCompiling || compilerState !== 'ready'}
+                            className={`compile-button ${
+                                compilerState === 'ready' 
+                                    ? isCompiling ? 'compiling' : 'ready'
+                                    : compilerState === 'loading' ? 'loading' : 'error'
+                            }`}
+                        >
+                            {compilerState === 'ready' 
+                                ? (isCompiling ? 'Compiling...' : 'Compile')
+                                : (compilerState === 'loading' ? 'Loading Compiler...' : 'Compiler Error')}
+                        </button>
+                    </div>
+                </div>
+                <div className="line-numbers" ref={lineNumbersRef}>
+                    {updateLineNumbers()}
+                </div>
+                <div className="code-editor">
+                    <textarea
+                        ref={textareaRef}
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                    />
+                </div>
+            </div>
             <br />
-            <button 
-                onClick={compileSolidity}
-                disabled={isCompiling || !compilerLoaded}
-                style={{ 
-                    padding: '8px 16px', 
-                    margin: '10px 0',
-                    backgroundColor: isCompiling ? '#cccccc' : compilerLoaded ? '#4CAF50' : '#ff9800',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: compilerLoaded ? 'pointer' : 'not-allowed'
-                }}
-            >
-                {!compilerLoaded ? 'Loading Compiler...' : isCompiling ? 'Compiling...' : 'Compile'}
-            </button>
-            <pre style={{
-                backgroundColor: '#f5f5f5',
-                padding: '15px',
-                borderRadius: '4px',
-                overflowX: 'auto',
-                minHeight: '100px'
-            }}>
-                {output}
-            </pre>
+
+            <div className="output-panel">
+                <pre>
+                    {output}
+                </pre>
+            </div>
         </div>
     );
 };
