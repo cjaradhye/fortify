@@ -1,18 +1,24 @@
 /* src/assets/styles.css */
+body{
+  background-color: #1f1f1f;
+  overscroll-behavior:none ;
+}
+
+#root{
+  /* min-height: 100vh; */
+  min-width: 100vw;
+  background-color: #1f1f1f;
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .App {
     width: 80%;
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
-  }
-  
-  textarea {
-    width: 100%;
-    height: 300px;
-    font-family: monospace;
-    font-size: 14px;
-    padding: 10px;
-    border: 1px solid #ccc;
   }
   
   button {
@@ -41,3 +47,179 @@
     white-space: pre-wrap;
   }
   
+  /* src/assets/styles.css */
+.code-editor {
+  width: 100%;
+  /* margin-bottom: 20px; */
+}
+
+.code-editor textarea:focus {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.output-panel {
+  width: 100%;
+  /* margin-top: 20px; */
+}
+
+.output-panel pre {
+  width: calc(100% - 40px);
+  min-height: 150px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #f8f8f8;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth transitions for glassmorphism effects */
+.code-editor textarea,
+.output-panel pre {
+  transition: all 0.3s ease;
+}
+
+/* Scrollbar styling for both elements */
+.code-editor textarea::-webkit-scrollbar,
+.output-panel pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-editor textarea::-webkit-scrollbar-track,
+.output-panel pre::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.code-editor textarea::-webkit-scrollbar-thumb,
+.output-panel pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.code-editor textarea::-webkit-scrollbar-thumb:hover,
+.output-panel pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* src/assets/styles.css */
+.code-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.line-numbers {
+  position: absolute;
+  height: 81%;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  margin-top: 55px;
+  width: 16px;
+  padding: 20px 10px 20px 20px;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6e7681;
+  background: rgba(30, 30, 30, 0.5);
+  border-radius: 16px 0 0 16px;
+  text-align: right;
+  user-select: none;
+  
+  z-index: 1;
+}
+
+
+.code-editor textarea {
+  min-height: 500px;
+  width: calc(100% - 70px);
+  font-family: monospace;
+  font-size: 14px;
+  padding: 20px 20px 20px 50px;
+  border: none;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #f8f8f8;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  resize: vertical;
+  outline: none;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+.solidity-thingy{
+  display: flex;
+  flex-direction: column;
+  width: 85vw;
+  /* justify-content: center; */
+  align-items: center;
+  min-height: 80vh;;
+}
+
+.header-editor{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.compile-button {
+  padding: 8px 16px;
+  margin: 10px 0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.compile-button.ready {
+  background-color: #00D26A;
+}
+
+.compile-button.ready:hover {
+  background-color: #45a049;
+}
+
+.compile-button.compiling {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.compile-button.loading {
+  background-color: #FF6500;
+  cursor: not-allowed;
+}
+
+.compile-button.error {
+  background-color: #FF3B3B;
+  cursor: not-allowed;
+}
+
+.refresh-button {
+  margin: 10px 0;
+  padding: 8px 16px;
+  background-color: #005BBB;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.refresh-button:hover {
+  background-color: #0b7dda;
+}
+
+.my-button{
+  display: flex;
+  gap: 40px;
+}

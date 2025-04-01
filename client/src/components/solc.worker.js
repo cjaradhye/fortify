@@ -1,54 +1,57 @@
 // solc.worker.js
-const SOLC_URL = 'https://binaries.soliditylang.org/bin/soljson-v0.8.19+commit.7dd6d404.js';
+// Import the Solidity compiler
+importScripts('./soljson.js');  // Load from local file
 
-async function loadCompiler() {
-  try {
-    // Fetch the compiler script
-    const response = await fetch(SOLC_URL);
-    const scriptText = await response.text();
-    
-    // Create a blob URL
-    const blob = new Blob([scriptText], { type: 'application/javascript' });
-    const blobUrl = URL.createObjectURL(blob);
-    
-    // Use vite-ignore for the dynamic import
-    const module = await import(/* @vite-ignore */ blobUrl);
-    return module.default;
-  } catch (error) {
-    throw new Error(`Failed to load compiler: ${error.message}`);
+// Wait for the compiler to be fully initialized before reporting ready
+let compilerLoaded = false;
+
+function checkCompilerLoaded() {
+  if (typeof Module !== 'undefined' && Module.cwrap) {
+    compilerLoaded = true;
+    self.postMessage({ type: 'READY' });
+  } else {
+    // If not loaded yet, check again after a short delay
+    setTimeout(checkCompilerLoaded, 100);
   }
 }
 
-let solcPromise = loadCompiler();
+// Start checking if compiler is loaded
+checkCompilerLoaded();
 
-self.onmessage = async function(e) {
-  try {
-    const solc = await solcPromise;
-    
-    if (!solc || !solc.cwrap) {
-      throw new Error('Solidity compiler failed to initialize');
+self.onmessage = async (e) => {
+  if (e.data.type === 'COMPILE') {
+    if (!compilerLoaded) {
+      self.postMessage({ 
+        type: 'ERROR', 
+        message: 'Compiler not fully initialized yet. Please wait and try again.' 
+      });
+      return;
     }
-
-    const input = {
-      language: "Solidity",
-      sources: {
-        "contract.sol": {
-          content: e.data.code
+    
+    try {
+      const input = {
+        language: "Solidity",
+        sources: {
+          "contract.sol": { content: e.data.code }
+        },
+        settings: {
+          outputSelection: { "*": { "*": ["*"] } }
         }
-      },
-      settings: {
-        outputSelection: {
-          "*": {
-            "*": ["*"]
-          }
-        }
+      };
+      
+      // Make sure Module is defined and cwrap is available
+      if (typeof Module === 'undefined' || !Module.cwrap) {
+        throw new Error('Solidity compiler not properly loaded');
       }
-    };
-
-    const compile = solc.cwrap("compile", "string", ["string"]);
-    const output = compile(JSON.stringify(input));
-    self.postMessage({ output: JSON.parse(output) });
-  } catch (error) {
-    self.postMessage({ error: error.message });
+      
+      const compile = Module.cwrap("compile", "string", ["string"]);
+      const output = compile(JSON.stringify(input));
+      self.postMessage({ type: 'COMPILED', output: JSON.parse(output) });
+    } catch (error) {
+      self.postMessage({ 
+        type: 'ERROR', 
+        message: error.message || 'Unknown compilation error' 
+      });
+    }
   }
 };
