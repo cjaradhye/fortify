@@ -6,6 +6,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const proxyRoutes = require("./routes/proxyRoutes");
 
 require("./config/passport");
 
@@ -23,6 +24,7 @@ app.use(passport.session());
 
 // Routes
 app.use("/auth", authRoutes);
+app.use("/proxy", proxyRoutes);
 
 // Database Connection & Server Start
 connectDB();
