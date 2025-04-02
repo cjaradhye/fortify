@@ -1,171 +1,11 @@
-# from langchain_google_genai import GoogleGenerativeAI
-# from langchain.prompts import PromptTemplate
-# from langchain.chains import LLMChain
-# import os
-# import json
-
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
-# api_key = os.getenv("GEMINI_API_KEY")
-
-# llm = GoogleGenerativeAI(model="gemini-1.5-pro", temperature=0.2)
-
-# prompt_template = """
-# You are a security expert specializing in smart contract audits. Analyze the following smart contract code for vulnerabilities, potential security risks, and exploitable areas.
-
-# SMART CONTRACT CODE:
-# ```solidity
-# {contract_code}
-# ```
-
-# Perform a comprehensive security analysis focusing on:
-# 1. Reentrancy vulnerabilities
-# 2. Integer overflow/underflow issues
-# 3. Front-running possibilities
-# 4. Access control problems
-# 5. Logic errors or edge cases
-# 6. Gas optimization issues
-# 7. Oracle manipulation vulnerabilities
-# 8. Flash loan attack vectors
-# 9. Function visibility concerns
-# 10. DOS (Denial of Service) vulnerabilities
-
-# For each identified issue:
-# - Describe the vulnerability
-# - Explain how it could be exploited
-# - Rate its severity (Critical, High, Medium, Low)
-# - Provide specific code references
-# - Recommend fixes
-
-# Present your analysis in a structured JSON format with the following keys:
-# - "vulnerability_name"
-# - "description"
-# - "exploitation_scenario"
-# - "severity" 
-# - "affected_code_lines"
-# - "recommended_fix"
-
-# If no vulnerabilities are found in a specific category, explicitly state that.
-# """
-
-# prompt = PromptTemplate(
-#     input_variables=["contract_code"],
-#     template=prompt_template,
-# )
-
-# # Create the chain
-# smart_contract_analyzer_chain = LLMChain(llm=llm, prompt=prompt)
-
-# def analyze_smart_contract(contract_code):
-#     """
-#     Analyzes a smart contract for security vulnerabilities using the Gemini API.
-    
-#     Args:
-#         contract_code (str): The Solidity code of the smart contract
-        
-#     Returns:
-#         dict: Parsed JSON response containing the vulnerability analysis
-#     """
-#     try:
-#         # Run the chain
-#         result = smart_contract_analyzer_chain.run(contract_code=contract_code)
-        
-#         # Attempt to parse the response as JSON
-#         try:
-#             # Find JSON content if it's embedded in a larger text
-#             json_start = result.find('{')
-#             json_end = result.rfind('}') + 1
-#             if json_start >= 0 and json_end > json_start:
-#                 json_content = result[json_start:json_end]
-#                 parsed_result = json.loads(json_content)
-#             else:
-#                 parsed_result = json.loads(result)
-                
-#             return parsed_result
-#         except json.JSONDecodeError:
-#             # If not valid JSON, return the raw text
-#             return {"raw_analysis": result}
-            
-#     except Exception as e:
-#         return {"error": str(e)}
-
-# def generate_report(analysis_results):
-#     """
-#     Generates a human-readable report from the vulnerability analysis.
-    
-#     Args:
-#         analysis_results (dict): The parsed results from the vulnerability analysis
-        
-#     Returns:
-#         str: A formatted report
-#     """
-#     if "error" in analysis_results:
-#         return f"Error during analysis: {analysis_results['error']}"
-    
-#     if "raw_analysis" in analysis_results:
-#         return f"Analysis completed but returned in non-JSON format:\n\n{analysis_results['raw_analysis']}"
-    
-#     report = "# Smart Contract Security Analysis Report\n\n"
-    
-#     # Add vulnerabilities to the report
-#     vulnerabilities = analysis_results.get("vulnerabilities", [])
-#     if not vulnerabilities:
-#         vulnerabilities = [analysis_results]  # Handle case where result is directly a list of vulnerabilities
-        
-#     if not isinstance(vulnerabilities, list):
-#         return f"Unexpected analysis format. Raw output:\n\n{analysis_results}"
-    
-#     for vuln in vulnerabilities:
-#         report += f"## {vuln.get('vulnerability_name', 'Unnamed Vulnerability')}\n"
-#         report += f"**Severity**: {vuln.get('severity', 'Unknown')}\n\n"
-#         report += f"**Description**: {vuln.get('description', 'No description provided')}\n\n"
-#         report += f"**Exploitation Scenario**: {vuln.get('exploitation_scenario', 'No scenario provided')}\n\n"
-#         report += f"**Affected Code Lines**: {vuln.get('affected_code_lines', 'Not specified')}\n\n"
-#         report += f"**Recommended Fix**: {vuln.get('recommended_fix', 'No fix provided')}\n\n"
-#         report += "---\n\n"
-    
-#     return report
-
-# if __name__ == "__main__":
-#     example_contract = """
-#     pragma solidity ^0.8.0;
-    
-#     contract SimpleStorage {
-#         uint256 private _value;
-#         address public owner;
-        
-#         constructor() {
-#             owner = msg.sender;
-#         }
-        
-#         function setValue(uint256 newValue) public {
-#             _value = newValue;
-#         }
-        
-#         function getValue() public view returns (uint256) {
-#             return _value;
-#         }
-        
-#         function transferOwnership(address newOwner) public {
-#             require(msg.sender == owner, "Not the owner");
-#             owner = newOwner;
-#         }
-#     }
-#     """
-    
-#     analysis = analyze_smart_contract(example_contract)
-    
-#     report = generate_report(analysis)
-#     print(report)
-
 import google.generativeai as genai
 import os
 import json
 import re
+from dotenv import load_dotenv
 
-# Function to analyze smart contract using Gemini API
+load_dotenv()
+
 def analyze_smart_contract(contract_code, api_key):
     """
     Analyzes a smart contract for security vulnerabilities using the Gemini API directly.
@@ -178,7 +18,6 @@ def analyze_smart_contract(contract_code, api_key):
         dict: Analysis results
     """
     try:
-        # Configure the Gemini API with the provided key
         genai.configure(api_key=api_key)
         
         # Create the prompt
@@ -394,41 +233,13 @@ def generate_readable_report(analysis_results):
     
     return report
 
-# Example usage
 if __name__ == "__main__":
-    # Get API key from user (or you could store it in an environment variable)
-    api_key = input("Enter your Gemini API key: ")
+ 
+    api_key = os.getenv("GEMINI_API_KEY")
+
+    inp = input("Enter your smart contract for analysis: ")
     
-    # Example smart contract code - you would replace this with your input mechanism
-    example_contract = """
-    pragma solidity ^0.8.0;
+    analysis = analyze_smart_contract(inp, api_key)
     
-    contract SimpleStorage {
-        uint256 private _value;
-        address public owner;
-        
-        constructor() {
-            owner = msg.sender;
-        }
-        
-        function setValue(uint256 newValue) public {
-            _value = newValue;
-        }
-        
-        function getValue() public view returns (uint256) {
-            return _value;
-        }
-        
-        function transferOwnership(address newOwner) public {
-            require(msg.sender == owner, "Not the owner");
-            owner = newOwner;
-        }
-    }
-    """
-    
-    # Analyze the contract
-    analysis = analyze_smart_contract(example_contract, api_key)
-    
-    # Generate and print the report
     report = generate_readable_report(analysis)
     print(report)

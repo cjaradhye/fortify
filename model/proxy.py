@@ -93,8 +93,8 @@ def calculate_risk_score(vulnerabilities):
     severity_weights = {
         "Critical": 0.4,
         "High": 0.25,
-        "Medium": 0.15,
-        "Low": 0.05,
+        "Medium": 0.2,
+        "Low": 0.1,
         "N/A": 0
     }
     
@@ -144,11 +144,7 @@ def generate_readable_report(analysis_results):
     
     # Add risk score
     report += f"RISK ASSESSMENT SCORE: {risk_score}/1.0\n\n"
-    
-    # Add executive summary
-    report += "EXECUTIVE SUMMARY:\n"
-    report += "-" * 20 + "\n"
-    
+   
     # Count vulnerabilities by severity
     severity_counts = {"Critical": 0, "High": 0, "Medium": 0, "Low": 0}
     real_vulnerabilities = []
@@ -158,71 +154,7 @@ def generate_readable_report(analysis_results):
         if severity in severity_counts and severity != "N/A":
             severity_counts[severity] += 1
             real_vulnerabilities.append(vuln)
-    
-    # Create summary text
-    if sum(severity_counts.values()) == 0:
-        report += "No significant vulnerabilities were found in the analyzed smart contract.\n"
-    else:
-        report += f"Analysis identified {sum(severity_counts.values())} vulnerabilities:\n"
-        for severity, count in severity_counts.items():
-            if count > 0:
-                report += f"- {count} {severity} severity issue{'s' if count > 1 else ''}\n"
-        
-        if risk_score >= 0.7:
-            report += "\nThis contract has CRITICAL security concerns that must be addressed before deployment.\n"
-        elif risk_score >= 0.4:
-            report += "\nThis contract has SIGNIFICANT security concerns that should be addressed.\n"
-        elif risk_score >= 0.2:
-            report += "\nThis contract has MODERATE security concerns that would benefit from remediation.\n"
-        else:
-            report += "\nThis contract has MINOR security concerns with relatively low risk.\n"
-    
-    report += "\n"
-    
-    # Add detailed findings section
-    report += "DETAILED FINDINGS:\n"
-    report += "-" * 20 + "\n\n"
-    
-    if real_vulnerabilities:
-        for i, vuln in enumerate(real_vulnerabilities):
-            name = vuln.get("vulnerability_name", "Unnamed Vulnerability")
-            severity = vuln.get("severity", "Unknown")
-            description = vuln.get("description", "No description provided")
-            exploitation = vuln.get("exploitation_scenario", "No scenario provided")
-            affected_lines = vuln.get("affected_code_lines", "Not specified")
-            fix = vuln.get("recommended_fix", "No fix provided")
-            
-            report += f"{i+1}. {name} (Severity: {severity})\n"
-            report += f"   Description: {description}\n"
-            if exploitation != "N/A":
-                report += f"   Exploitation Scenario: {exploitation}\n"
-            report += f"   Affected Code Lines: {affected_lines}\n"
-            if fix != "N/A":
-                report += f"   Recommended Fix: {fix}\n"
-            report += "\n"
-    
-    # Add section for secure aspects
-    report += "SECURE ASPECTS:\n"
-    report += "-" * 20 + "\n"
-    
-    secure_aspects = []
-    for vuln in vulnerabilities:
-        name = vuln.get("vulnerability_name", "")
-        if "No " in name and vuln.get("severity", "") == "N/A":
-            secure_aspects.append(vuln)
-    
-    if secure_aspects:
-        for aspect in secure_aspects:
-            name = aspect.get("vulnerability_name", "")
-            description = aspect.get("description", "No description provided")
-            report += f"- {name}: {description}\n\n"
-    else:
-        report += "No specific secure aspects were highlighted in the analysis.\n\n"
-    
-    # Add conclusion
-    report += "CONCLUSION:\n"
-    report += "-" * 20 + "\n"
-    
+
     if risk_score >= 0.7:
         report += "The analyzed smart contract contains serious security vulnerabilities that require immediate attention. DO NOT deploy this contract until these issues have been fixed and verified.\n"
     elif risk_score >= 0.4:
@@ -236,7 +168,7 @@ def generate_readable_report(analysis_results):
 
 if __name__ == "__main__":
     api_key = os.getenv("GEMINI_KEY_2")
-    path = "/womanTechies/contracts/fetched/FetchedContract.sol"
+    path = os.path.join("..", "contracts", "fetched", "FetchedContract.sol")
     with open(path, "r", encoding="utf-8") as file:
         source = file.read()
     
