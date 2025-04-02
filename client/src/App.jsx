@@ -3,8 +3,12 @@ import React, { useState } from "react";
 import SolidityIDE from "./components/SolidityIDE";
 import Navbar from "./components/Navbar";
 import Landing from "./components/landing/Landing";
-import Sample from "./components/Sample";
+// import Sample from "./components/Sample";
 import { Routes, Route } from 'react-router-dom'
+import ContractFetcher from "./components/ContractFetcher";
+import { ToastContainer } from "react-toastify";
+
+
 
 function App() {
   return (
@@ -17,7 +21,11 @@ function App() {
         } />
       <Route path="/" element={
         <Landing />} />
-      <Route path="/contract" element={<Sample />} />
+      <Route path="/contract" element={
+        <>
+        <ToastContainer />
+        <ContractFetcher />
+        </>} />
     </Routes>
   )
 }

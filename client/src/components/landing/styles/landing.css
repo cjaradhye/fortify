@@ -15,6 +15,16 @@
     flex-direction: column;
 }
 
+.disection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 80vh;
+    align-items: center;
+    gap: 200px;
+}
+
 .question{
     padding-left: 40px;
     padding-right: 40px;

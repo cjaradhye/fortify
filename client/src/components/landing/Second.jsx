@@ -2,8 +2,8 @@ import "./styles/landing.css";
 
 function Second(){
     return (
-        <div className="minor-section section">
-            <div className="question left">
+        <div className="">
+            <div className="question">
                 <h5>Find Vulnerabilities <span className="fancy">Instantly.</span></h5>
                 <p>
                     Our AI scans smart contracts for security flaws before hackers can.

@@ -1,0 +1,24 @@
+.footer {
+    width: 100vw;
+    padding: 40px 0px;
+    background: #FF6500;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #EAEAEA;
+    font-size: 14px;
+    position: relative;
+}
+
+.footer-logo {
+    height: 40px;
+    filter: brightness(0) invert(1); /* Ensures the logo is visible on dark backgrounds */
+}
+
+.footer-text {
+    font-family: "Orbitron", sans-serif;
+    font-size: 14px;
+}

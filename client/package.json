@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "gsap": "^3.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-toastify": "^11.0.5",
     "socket.io-client": "^4.8.1",
     "solc": "^0.8.9",
     "solc-js": "^1.0.1",
