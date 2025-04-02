@@ -5,6 +5,7 @@ const SolidityIDE = () => {
     const [code, setCode] = useState(`pragma solidity ^0.8.0;\n\ncontract MyContract {\n    string public greeting = "Hello, World!";\n}`);
     const [output, setOutput] = useState("Initializing compiler...");
     const [isCompiling, setIsCompiling] = useState(false);
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [compilerState, setCompilerState] = useState("loading");
     const workerRef = useRef(null);
     const textareaRef = useRef(null);
@@ -20,15 +21,83 @@ const SolidityIDE = () => {
         return lineNumbers;
     };
 
+    const analyzeSolidity = async () => {
+        if (!code.trim()) {
+            setOutput("Please enter Solidity code to analyze");
+            return;
+        }
+    
+        setIsAnalyzing(true);
+        setOutput("Analyzing contract for vulnerabilities...");
+    
+        try {
+            const response = await fetch('http://localhost:8000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ code: code }),
+                credentials: 'same-origin'  // Important for cookies/sessions
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(
+                    errorData.detail || 
+                    errorData.message || 
+                    `API error: ${response.status} ${response.statusText}`
+                );
+            }
+    
+            const data = await response.json();
+            
+            if (data.error) {
+                setOutput(`Analysis error: ${data.error}`);
+            } else {
+                setOutput(`
+    === Risk Analysis Results ===
+    Risk Score: ${data.risk_score.toFixed(3)}
+    Interpretation: ${data.interpretation}
+    
+    ${data.detailed_analysis || ''}
+    
+    Recommendations:
+    ${getRecommendations(data.risk_score)}
+                `);
+            }
+        } catch (error) {
+            if (error.message.includes('Failed to fetch')) {
+                setOutput(`Failed to connect to analysis API. Please ensure:
+    1. The API server is running at http://localhost:8000
+    2. The server has CORS enabled
+    3. No browser extensions are blocking the request`);
+            } else {
+                setOutput(`Analysis error: ${error.message}`);
+            }
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
+    
+    // Helper function for recommendations
+    const getRecommendations = (riskScore) => {
+        if (riskScore > 0.75) {
+            return "- Critical risk detected\n- Immediate security review required\n- Consider formal verification";
+        } else if (riskScore > 0.5) {
+            return "- High risk detected\n- Thorough security audit recommended\n- Test extensively on testnet";
+        } else if (riskScore > 0.25) {
+            return "- Moderate risk\n- Standard security review recommended";
+        }
+        return "- Low risk\n- Basic security checks recommended";
+    };
     useEffect(() => {
-        // Check for WebAssembly support
         if (!window.WebAssembly || !WebAssembly.instantiate) {
             setCompilerState('error');
             setOutput("WebAssembly is not supported in this browser.");
             return;
         }
 
-        // Scroll synchronization
         const textarea = textareaRef.current;
         const lineNumbers = lineNumbersRef.current;
 
@@ -271,6 +340,22 @@ const SolidityIDE = () => {
                                 ? (isCompiling ? 'Compiling...' : 'Compile')
                                 : (compilerState === 'loading' ? 'Loading Compiler...' : 'Compiler Error')}
                         </button>
+                        <button 
+    onClick={analyzeSolidity}
+    disabled={isAnalyzing}
+    className="analyze-button"
+    style={{
+        marginLeft: '10px',
+        backgroundColor: '#ff6b6b',
+        color: 'white',
+        border: 'none',
+        padding: '8px 16px',
+        borderRadius: '4px',
+        cursor: 'pointer'
+    }}
+>
+    {isAnalyzing ? 'Analyzing...' : 'Risk Analyze'}
+</button>
                     </div>
                 </div>
                 <div className="line-numbers" ref={lineNumbersRef}>
