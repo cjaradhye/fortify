@@ -1,8 +1,11 @@
 numpy
 pandas
-dotenv
 virtualenv
 transformers
 tensorflow
 scikit-learn
 torch
+streamflow
+requests
+flask
+fastapi
