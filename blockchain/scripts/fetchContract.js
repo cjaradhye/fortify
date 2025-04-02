@@ -1,16 +1,23 @@
-//user address input to source code -> contract-source.sol
-
-require("dotenv").config();
+require("dotenv").config({ path: '../../.env' });
 const axios = require("axios");
 const { ethers } = require("ethers");
-
+const fs = require("fs");
+const path = require("path");
 
 const INFURA_RPC_URL = process.env.INFURA_RPC_URL;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 
+// Hardcoded contract address
+const CONTRACT_ADDRESS = "0x4E95B942633b77372fFeafDf9A8105C23B17D91B";
+
+// Predefined name for the Solidity file
+const PREDEFINED_CONTRACT_NAME = "FetchedContract.sol";
+
 async function fetchContractDetails(contractAddress) {
     try {
         const provider = new ethers.JsonRpcProvider(INFURA_RPC_URL);
+        await provider.ready; // Wait for provider to be ready
+        console.log("Connected to network:", (await provider.getNetwork()).name);
 
         const bytecode = await provider.getCode(contractAddress);
         if (bytecode === "0x") {
@@ -19,113 +26,92 @@ async function fetchContractDetails(contractAddress) {
         }
         console.log("✅ Contract bytecode retrieved!");
         
-        
         console.log("🔍 Checking if contract is verified on Etherscan...");
-        
-    
-        const abiUrl = `https://api-sepolia.etherscan.io/api?module=contract&action=getabi&address=${contractAddress}&apikey=${ETHERSCAN_API_KEY}`;
-        const abiResponse = await axios.get(abiUrl);
         
         const sourceUrl = `https://api-sepolia.etherscan.io/api?module=contract&action=getsourcecode&address=${contractAddress}&apikey=${ETHERSCAN_API_KEY}`;
         const sourceResponse = await axios.get(sourceUrl);
         
-        let abi = null;
-        let sourceCode = null;
-        let contractName = null;
-        
-        if (abiResponse.data.status === "1") {
-            abi = JSON.parse(abiResponse.data.result);
-            console.log("✅ Contract ABI retrieved from Etherscan!");
-        } else {
-            console.log("❌ Contract ABI retrieval failed.");
-        }
+        let rawSourceCode = null;
         
         if (sourceResponse.data.status === "1" && sourceResponse.data.result.length > 0) {
-            sourceCode = sourceResponse.data.result[0].SourceCode;
-            contractName = sourceResponse.data.result[0].ContractName;
+            rawSourceCode = sourceResponse.data.result[0].SourceCode;
             console.log("✅ Contract source code retrieved from Etherscan!");
-        
-            if (sourceCode.startsWith('{')) {
-                try {
-                    const sourceJson = JSON.parse(sourceCode);
-                    if (sourceJson.sources) {
-                       
-                        const sources = {};
-                        for (const [path, content] of Object.entries(sourceJson.sources)) {
-                            sources[path] = content.content;
-                        }
-                        sourceCode = sources;
-                    }
-                } catch (e) {
-                    console.log("Source code is in a special format, using as-is");
-                }
-            }
         } else {
-            console.log("❌ Contract source code retrieval failed or contract is not verified.");
+            console.log("❌ Contract source code retrieval failed.");
         }
         
-        
-        const dummyRiskScore = Math.random() * 10; 
-        console.log(`Risk Score (dummy): ${dummyRiskScore.toFixed(2)}/10`);
-        
-        return { 
-            bytecode, 
-            abi, 
-            sourceCode, 
-            contractName,
-            riskScore: dummyRiskScore 
-        };
+        return { rawSourceCode };
     } catch (error) {
-        console.error("Error fetching contract details:", error.message);
+        console.error("Error fetching contract details:", error);
     }
 }
 
-
-async function main() {
-    const userContractAddress = "0x4E95B942633b77372fFeafDf9A8105C23B17D91B"; 
-    const contractDetails = await fetchContractDetails(userContractAddress);
+// Function to extract just the Solidity code content from the response
+function extractSolidityCode(sourceCode) {
+    if (!sourceCode) return null;
     
-    if (contractDetails) {
-      
-        console.log("\n--- CONTRACT DETAILS ---");
-        console.log(`Address: ${userContractAddress}`);
-        console.log(`Contract Name: ${contractDetails.contractName || 'Unknown'}`);
-        console.log(`Has ABI: ${contractDetails.abi ? 'Yes' : 'No'}`);
-        console.log(`Has Source Code: ${contractDetails.sourceCode ? 'Yes' : 'No'}`);
-        console.log(`Risk Score: ${contractDetails.riskScore.toFixed(2)}/10`);
-        
-    
-        if (contractDetails.sourceCode) {
-            const fs = require('fs');
-          
-            if (typeof contractDetails.sourceCode === 'string') {
-                fs.writeFileSync('./contract-source.sol', contractDetails.sourceCode);
-                console.log("✅ Source code saved to contract-source.sol");
-            } else {
-               
-                if (!fs.existsSync('./contract-sources')) {
-                    fs.mkdirSync('./contract-sources');
+    try {
+        if (sourceCode.startsWith('{{') && sourceCode.endsWith('}}')) {
+            const jsonContent = sourceCode.substring(1, sourceCode.length - 1);
+            const parsedJson = JSON.parse(jsonContent);
+            if (parsedJson.sources) {
+                const firstSourceFile = Object.values(parsedJson.sources)[0];
+                if (firstSourceFile && firstSourceFile.content) {
+                    return firstSourceFile.content;
                 }
-                
-                for (const [path, content] of Object.entries(contractDetails.sourceCode)) {
-                  
-                    const filePath = `./contract-sources/${path}`;
-                    const dir = filePath.substring(0, filePath.lastIndexOf('/'));
-                    if (!fs.existsSync(dir)) {
-                        fs.mkdirSync(dir, { recursive: true });
+            }
+        } else if (sourceCode.startsWith('{') && sourceCode.endsWith('}')) {
+            try {
+                const parsedJson = JSON.parse(sourceCode);
+                if (parsedJson.sources) {
+                    const firstSourceFile = Object.values(parsedJson.sources)[0];
+                    if (firstSourceFile && firstSourceFile.content) {
+                        return firstSourceFile.content;
                     }
-                    
-                    fs.writeFileSync(filePath, content);
                 }
-                console.log("✅ Multiple source files saved to ./contract-sources directory");
+            } catch (e) {
+                console.log("Not valid JSON, might be direct code");
             }
         }
+        return sourceCode;
+    } catch (error) {
+        console.error("Error extracting Solidity code:", error);
+        return sourceCode;
     }
 }
 
-main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error);
-        process.exit(1);
-    });
+// Function to save only Solidity code with a predefined name
+async function saveSolidityCode(details) {
+    if (!details || !details.rawSourceCode) return;
+    
+    const outputDir = path.join(__dirname, '../contracts/fetched');
+    
+    // Create directory if it doesn't exist
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+    }
+    
+    // Extract and save Solidity code with predefined name
+    const solidityCode = extractSolidityCode(details.rawSourceCode);
+    if (solidityCode) {
+        const sourceFile = path.join(outputDir, PREDEFINED_CONTRACT_NAME);
+        fs.writeFileSync(sourceFile, solidityCode);
+        console.log(`✅ Solidity code saved to: ${sourceFile}`);
+    }
+}
+
+// Use the hardcoded address instead of command line argument
+console.log(`Fetching contract details for: ${CONTRACT_ADDRESS}`);
+
+fetchContractDetails(CONTRACT_ADDRESS)
+    .then(async details => {
+        console.log("\n=== Contract Details ===");
+        if (details) {
+            console.log("Saving as:", PREDEFINED_CONTRACT_NAME);
+            await saveSolidityCode(details);
+        }
+    })
+    .catch(console.error);
+
+// Export the functions for use in other modules
+module.exports = { fetchContractDetails, saveSolidityCode };
