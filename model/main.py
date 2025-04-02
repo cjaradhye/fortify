@@ -1,24 +1,32 @@
-from fastapi import FastAPI
-import numpy as np
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
 from predictor import CodeRiskPredictor
+from typing import Optional
 
 app = FastAPI()
 predictor = CodeRiskPredictor("model_artifacts")
 
-# Add a root endpoint
 @app.get("/")
 def home():
     return {"message": "Smart Contract Risk Prediction API is running"}
 
-# Your prediction endpoint
-@app.post("/predict")
-async def predict(features: list[list[float]]):
-    try:
-        prediction = predictor.predict(np.array(features))
-        return {"risk_score": float(prediction[0][0])}
-    except Exception as e:
-        return {"error": str(e)}
+class CodeInput(BaseModel):
+    code: str
+    contract_name: Optional[str] = None
 
+@app.post("/predict")
+async def predict(request: CodeInput):
+    try:
+        if len(request.code) < 20:
+            raise HTTPException(status_code=422, detail="Code too short (min 20 chars)")
+        
+        return {
+            "risk_score": 0.42, 
+            "interpretation": "Sample response"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000) 
