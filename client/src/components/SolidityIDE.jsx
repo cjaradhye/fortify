@@ -317,7 +317,7 @@ const SolidityIDE = () => {
         <div className="solidity-thingy" style={{ padding: '20px', fontFamily: 'monospace' }}>
             <div className="code-container">
                 <div className="header-editor">
-                    <h3>Solidity.sol</h3>
+                    <h6>Solidity.sol</h6>
                     <div className="my-button">
                         {compilerState === 'error' && (
                             <button 
@@ -341,21 +341,21 @@ const SolidityIDE = () => {
                                 : (compilerState === 'loading' ? 'Loading Compiler...' : 'Compiler Error')}
                         </button>
                         <button 
-    onClick={analyzeSolidity}
-    disabled={isAnalyzing}
-    className="analyze-button"
-    style={{
-        marginLeft: '10px',
-        backgroundColor: '#ff6b6b',
-        color: 'white',
-        border: 'none',
-        padding: '8px 16px',
-        borderRadius: '4px',
-        cursor: 'pointer'
-    }}
->
-    {isAnalyzing ? 'Analyzing...' : 'Risk Analyze'}
-</button>
+                            onClick={analyzeSolidity}
+                            disabled={isAnalyzing}
+                            className="analyze-button"
+                            style={{
+                                marginLeft: '10px',
+                                backgroundColor: '#ff6b6b',
+                                color: 'white',
+                                border: 'none',
+                                padding: '8px 16px',
+                                borderRadius: '4px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            {isAnalyzing ? 'Analyzing...' : 'Risk Analyze'}
+                        </button>
                     </div>
                 </div>
                 <div className="line-numbers" ref={lineNumbersRef}>

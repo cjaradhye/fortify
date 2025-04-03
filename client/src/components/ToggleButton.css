@@ -1,37 +1,59 @@
 .toggle-container {
-    width: 200px;
-    height: 40px;
-    background: #ddd;
-    border-radius: 20px;;
-    position: sticky;
+    /* width: 250px; */
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 5px;
     margin: 50px auto;
-    transition: background 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .toggle-slider {
     width: 50%;
-    height: 100%;
-    background: #4caf50;
+    height: 90%;
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     position: absolute;
-    left: 0px;
+    /* top: 5px; */
+    left: 5px;
     transition: left 0.3s ease, background 0.3s ease;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .active-toggle {
-    left: calc(100% - 50%);
-    background: #ff9800;
+    left: calc(100% - 50% - 5px);
+    background: rgba(0, 0, 0, 0.3); /* Darker glass for selected */
 }
 
 .toggle-label {
     flex: 1;
+    /* min-width: 170px; */
+    margin: 0px 5px;
     text-align: center;
     font-weight: bold;
     font-size: 14px;
-    color: #333;
+    color: rgba(255, 255, 255, 0.9);
+    position: relative;
     z-index: 2;
+}
+
+.left-button {
+    padding: 0px 10px;
+}
+.right-button {
+    padding-right: 0px 10px;
+}
+
+.toggle-option{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }

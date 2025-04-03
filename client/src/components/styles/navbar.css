@@ -31,6 +31,7 @@
   }
 
 .sol-navbar{
+    z-index: 1000;
     height: 100px;
     width: 85vw;
     position: fixed;

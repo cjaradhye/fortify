@@ -8,6 +8,7 @@ body{
   /* min-height: 100vh; */
   min-width: 100vw;
   background-color: #1f1f1f;
+  flex-direction: column;
   padding-top: 50px;
   display: flex;
   justify-content: center;
@@ -121,7 +122,7 @@ body{
   overflow: hidden;
   left: 0;
   top: 0;
-  margin-top: 55px;
+  margin-top: 90px;
   width: 16px;
   padding: 20px 10px 20px 20px;
   font-family: monospace;
@@ -164,8 +165,13 @@ body{
   align-items: center;
   min-height: 80vh;;
 }
+h6{
+  font-size: 1rem;
+}
 
 .header-editor{
+  height: 50px;
+  margin: 20px 0px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -174,7 +180,7 @@ body{
 
 .compile-button {
   padding: 8px 16px;
-  margin: 10px 0;
+  /* margin: 10px 0; */
   color: white;
   border: none;
   border-radius: 4px;
@@ -220,6 +226,8 @@ body{
 }
 
 .my-button{
+  align-items: center;
+  justify-content: center;
   display: flex;
   gap: 40px;
 }

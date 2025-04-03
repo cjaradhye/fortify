@@ -11,7 +11,7 @@ const MainThingy = () => {
         <>
             <Navbar />
             <ToggleButton showOne={showOne} setShowOne={setShowOne} />
-            {showOne ? <SolidityIDE /> : <ContractFetcher />}
+            {showOne ? <ContractFetcher /> : <SolidityIDE />}
         </>
     );
 };

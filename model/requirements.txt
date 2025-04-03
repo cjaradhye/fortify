@@ -1,11 +1,10 @@
 numpy
 pandas
 virtualenv
-transformers
-tensorflow
 scikit-learn
 torch
-streamflow
-requests
+streamlit
+uvicorn
+request
 flask
 fastapi

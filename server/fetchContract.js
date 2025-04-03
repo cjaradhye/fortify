@@ -115,4 +115,4 @@ fetchContractDetails(CONTRACT_ADDRESS)
     .catch(console.error);
 
 // Export the functions for use in other modules
-module.exports = { fetchContractDetails, saveSolidityCode };
+module.exports = { fetchContractDetails, saveSolidityCode, extractSolidityCode };
