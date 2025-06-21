@@ -1,14 +1,3 @@
-Perfect — here's your fully updated and **final polished `README.md`** for **Fortify**, now reflecting:
-
-* All your backend/frontend tools (Vite + MERN)
-* AI model dependencies from `requirements.txt`
-* The fact that **smart contracts** live in the `blockchain/` folder
-* React frontend without TypeScript
-* Proper contributor attribution
-
----
-
-```markdown
 # 🛡️ Fortify
 
 **Write. Compile. Fortify.**  
