@@ -1,107 +1,176 @@
-# 🛡️ Fortify
+Perfect — here's your fully updated and **final polished `README.md`** for **Fortify**, now reflecting:
 
-**Write. Compile. Fortify.**  
-A smart contract development playground designed to secure, test, and validate your Solidity code — all in one place.
+* All your backend/frontend tools (Vite + MERN)
+* AI model dependencies from `requirements.txt`
+* The fact that **smart contracts** live in the `blockchain/` folder
+* React frontend without TypeScript
+* Proper contributor attribution
 
 ---
 
-## 🚀 What is Fortify?
+```markdown
+# 🛡️ Fortify
 
-Fortify is a Solidity IDE that combines:
+**Write. Compile. Fortify.**  
+A full-stack Solidity IDE & vulnerability scanner that lets developers build, test, and secure smart contracts — with AI-powered insights.
 
-- 🧠 **AI-powered vulnerability detection**  
-- 🧑‍💻 **Live code editing and compilation**  
-- 🔐 **Secure smart contract deployment and access control testing**  
-- 🌐 **Full-stack dApp architecture** with a focus on usability and security
+---
 
-All this while guiding developers away from **real-world bugs** in Ethereum contracts.
+## 💡 What is Fortify?
+
+Fortify is a developer-first smart contract IDE that allows:
+
+- 🧠 **Live ML-based vulnerability detection**
+- 🔐 **Secure contract compilation and ABI generation**
+- ✍️ **Real-time Solidity editing inside a React interface**
+- 🚀 **Full-stack dApp integration using Vite + MERN**
+- 🔍 **Readable bytecode, test-ready ABIs, and secure deployment hooks**
+
+Whether you're a beginner or a blockchain pro, Fortify makes sure you're never shipping unsafe Solidity again.
+
+---
+
+## 📁 Project Structure
+
+```
+
+womanTechies/
+├── blockchain/         # Smart contracts (Hardhat-based)
+├── client/             # React (Vite) frontend IDE
+├── contracts/fetched/  # Compiled ABI + Bytecode
+├── model/              # ML scripts and vulnerability detection
+├── server/             # Express backend, OAuth, compiler API
+├── README.md
+
+````
 
 ---
 
 ## 🧰 Tech Stack
 
-| Area         | Stack Used |
-|--------------|------------|
-| Frontend     | React (Vite), JavaScript |
-| Backend      | Node.js, Express.js, MongoDB |
-| Auth         | Google OAuth2 via Passport.js |
-| Compiler     | solc-js (WebAssembly in-browser) |
-| Blockchain   | Solidity, Hardhat |
-| ML Analysis  | Python (TensorFlow/Sklearn models for contract auditing) |
+| Area         | Tech Used |
+|--------------|-----------|
+| ✍️ Frontend  | React + Vite + JavaScript |
+| 🔌 Backend   | Express.js + MongoDB + Node |
+| 🔒 Auth      | Passport.js (Google OAuth2) |
+| ⚙️ Compiler  | solc-js (WebAssembly) |
+| 🔗 Blockchain| Solidity + Hardhat |
+| 🤖 ML Model  | Python, Scikit-learn, PyTorch, Streamlit, FastAPI |
 
 ---
 
-## ⚠️ Why Fortify?
+## 🔍 Common Smart Contract Issues Solved
 
-Smart contracts are hard to get right — Fortify addresses the most common and dangerous issues:
-
-- ❌ Misconfigured access controls
+- ❌ Insecure `msg.sender` logic
 - 🔁 Reentrancy bugs
-- ⛽ Inefficient gas usage
-- 🔒 Lack of immutability checks
-- 📜 Unreadable ABI outputs
-- 🐛 Poor test coverage
-- 🧠 No static or dynamic contract analysis tools built-in
+- 📛 Unchecked external calls
+- 🔐 Missing `onlyOwner` modifiers
+- 📦 Overexposed storage vars
+- 🚫 Gas inefficiencies and unoptimized logic
+- 🧠 Developers not being alerted of real vulnerabilities
 
-> Fortify integrates education with engineering — letting developers **build safer contracts from Day 1**.
-
----
-
-## 📦 Folder Structure
-
-```
-
-womanTechies/
-├── blockchain/         # Hardhat contracts + deployment
-├── client/             # React frontend with in-browser Solidity editor
-├── contracts/fetched/  # Compiled ABI & bytecode
-├── model/              # ML model files (Python)
-├── server/             # Express backend + OAuth + compiler API
-
-````
+Fortify flags issues in real-time and encourages secure best practices.
 
 ---
 
-## 🧪 Try It Locally
+## ⚙️ Installation
+
+### Backend & Blockchain
 
 ```bash
-# 1. Clone the repo
-git clone https://github.com/cjaradhye/womanTechies.git
-cd womanTechies
-
-# 2. Backend setup
-cd server && npm install
-
-# 3. Frontend setup
-cd ../client && npm install
-
-# 4. Blockchain environment
-cd ../blockchain && npm install
-npx hardhat node
-
-# 5. Run the app (in separate terminals)
 # Backend
-cd ../server && npm run dev
+cd server
+npm install
 
-# Frontend
-cd ../client && npm run dev
+# Blockchain (Hardhat)
+cd ../blockchain
+npm install
 ````
+
+### Frontend (Vite + React)
+
+```bash
+cd ../client
+npm install
+npm run dev
+```
+
+### ML Model (Python)
+
+```bash
+cd ../model
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+> Run Streamlit/FastAPI app from `model/` to expose vulnerability prediction API.
 
 ---
 
-## 🔐 Google OAuth Setup (Required)
+## 🔐 Google OAuth Setup
 
-On [Google Cloud Console](https://console.cloud.google.com):
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
 
-1. Create a new OAuth 2.0 credential
-2. Set redirect URI to: `http://localhost:3000/auth/google/callback`
-3. Add your Client ID and Secret in a `.env` file:
+2. Create OAuth 2.0 credentials
+
+3. Set callback URL:
+
+   ```
+   http://localhost:3000/auth/google/callback
+   ```
+
+4. Add to your `.env` file in `server/`:
 
 ```env
-GOOGLE_CLIENT_ID=your-id-here
-GOOGLE_CLIENT_SECRET=your-secret-here
+GOOGLE_CLIENT_ID=your-id
+GOOGLE_CLIENT_SECRET=your-secret
 SESSION_SECRET=random-key
 ```
+
+---
+
+## 📦 `requirements.txt`
+
+Used in the ML backend (`model/`):
+
+```
+numpy
+pandas
+virtualenv
+scikit-learn
+torch
+streamlit
+uvicorn
+request
+flask
+fastapi
+```
+
+---
+
+## 🧪 ABI/Bytecode Example
+
+When a Solidity contract like this is compiled:
+
+```solidity
+function store(uint256 num) external onlyOwner { ... }
+```
+
+Fortify returns a JSON output like:
+
+```json
+{
+  "abi": [...],
+  "evm": {
+    "bytecode": {
+      "object": "0x60806040..."
+    }
+  }
+}
+```
+
+This output is then used to analyze, test, and simulate your smart contract.
 
 ---
 
@@ -115,4 +184,10 @@ SESSION_SECRET=random-key
 
 ---
 
-> ✨ Fortify isn't just an IDE. It's a security-first experience for the next generation of Web3 devs.
+## 📄 License
+
+[MIT](LICENSE)
+
+---
+
+> Fortify: Because one unsafe contract can bankrupt millions. Let’s fix that.
