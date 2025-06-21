@@ -116,5 +116,3 @@ SESSION_SECRET=random-key
 ---
 
 > ✨ Fortify isn't just an IDE. It's a security-first experience for the next generation of Web3 devs.
-
-```
