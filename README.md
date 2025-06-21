@@ -111,13 +111,7 @@ SESSION_SECRET=random-key
 | -------------- | -------------------------------------------------- |
 | Aradhye Swarup | [@cjaradhye](https://github.com/cjaradhye)         |
 | Ved Kulkarni   | [@Ved-Kulkarni7](https://github.com/Ved-Kulkarni7) |
-| Tanya Bhardwaj | *Contributor (ML Module)*                          |
-
----
-
-## 📄 License
-
-[MIT](LICENSE)
+| Tanya Bhardwaj | [@tanya166](https://github.com/tanya166)           |
 
 ---
 
