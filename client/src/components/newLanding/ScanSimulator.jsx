@@ -26,7 +26,7 @@ const ScanSimulator = () => {
   }, []);
 
   return (
-    <div className="scan-box">
+<div className="scan-box container">
       <pre className="code-box">
         {`pragma solidity ^0.8.0;
 

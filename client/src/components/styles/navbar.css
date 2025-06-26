@@ -94,30 +94,20 @@
 @media screen and (max-width: 768px) {
     .navbar-links {
         display: none;
-        flex-direction: column;
+    }
+
+    .mainlogo{
         position: absolute;
-        top: 80px;
-        right: 20px;
-        background-color: rgba(31, 31, 31, 0.95);
-        width: 200px;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(10px);
-        text-align: center;
+        top: 15px;
+        left: 15px;
+        height: 40px;
+        padding: 5px;
     }
-
-    .navbar-links.open {
-        display: flex;
-    }
-
-    .navlink {
-        display: block;
-        padding: 10px 0;
+    .register-button {
+        width: 150px;
+        margin: 20px 20px;
+        padding: 10px;
         font-size: 1.2rem;
-    }
-
-    .hamburger {
-        display: block;
+        border-radius: 5px;
     }
 }

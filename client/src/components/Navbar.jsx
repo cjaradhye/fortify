@@ -27,11 +27,11 @@ function Navbar() {
             </div>
 
             {/* Navbar Links */}
-            <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
+            {/* <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
                 <a href="#home" className="navlink active">Home</a>
                 <a href="#about" className="navlink">Documentation</a>
                 <a href="#contact" className="navlink">Contact</a>
-            </div>
+            </div> */}
         </div>
     );
 }

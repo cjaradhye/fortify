@@ -13,9 +13,11 @@ function Landing(){
         <>
             <NavbarLanding />
             <Scanner />
-            <div className="disection">
-                <Second />
-                <ScanSimulator />
+            <div className="thiscontainer">
+                <div className="disection">
+                    <Second />
+                    <ScanSimulator />
+                </div>
             </div>
             <HowItWorks />
             <Footer />

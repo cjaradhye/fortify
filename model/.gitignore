@@ -12,3 +12,4 @@ source/
 secure.csv
 vulnerable.csv
 model_artifacts/
+venv

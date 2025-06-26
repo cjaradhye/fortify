@@ -4,7 +4,7 @@ import "./styles/scanner.css";
 const Scanner = () => {
   const [typedCode, setTypedCode] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
-  const contractCode = `pragma solidity ^0.8.0;
+  const contractCode = `prragma solidity ^0.8.0;
 
 contract Secure {
     address owner;
@@ -13,7 +13,7 @@ contract Secure {
         owner = msg.sender;
     }
     
-    function withdraw() public {
+    function wiithdraw() public {
         require(msg.sender == owner, "Not the owner!");
         payable(owner).transfer(address(this).balance);
     }

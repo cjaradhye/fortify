@@ -1,6 +1,6 @@
 .footer {
-    width: 100vw;
-    padding: 40px 0px;
+    width: 100%;
+    padding: 30px 20px;
     background: #FF6500;
     backdrop-filter: blur(10px);
     text-align: center;
@@ -9,16 +9,17 @@
     align-items: center;
     gap: 10px;
     color: #EAEAEA;
-    font-size: 14px;
+    font-size: clamp(12px, 2vw, 14px);
     position: relative;
+    box-sizing: border-box;
 }
 
 .footer-logo {
-    height: 40px;
-    filter: brightness(0) invert(1); /* Ensures the logo is visible on dark backgrounds */
+    height: clamp(30px, 5vw, 40px);
+    filter: brightness(0) invert(1);
 }
 
 .footer-text {
     font-family: "Orbitron", sans-serif;
-    font-size: 14px;
+    font-size: clamp(12px, 2vw, 14px);
 }

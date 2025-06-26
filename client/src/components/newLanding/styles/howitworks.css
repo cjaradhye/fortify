@@ -1,41 +1,67 @@
 .glass-box {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 20px;
-    margin: 10px 0px;
+    padding: 15px;
+    margin: 10px 0;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     color: #EAEAEA;
     transition: transform 0.3s ease-in-out;
-  }
-  
-  .glass-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 2px 5px rgba(0, 127, 162, 0.3);
-  }
-  
-  .section-title{
+    font-size: clamp(14px, 2vw, 16px);
+}
+
+.glass-box:hover {
+transform: translateY(-5px);
+box-shadow: 0 2px 5px rgba(47, 47, 47, 0.3);
+}
+
+.section-title {
     font-family: "Manrope";
-    font-size: 25px;
+    font-size: clamp(20px, 3vw, 25px);
     color: #00CFFF;
     text-align: center;
     margin-bottom: 20px;
-  }
+}
 
-  .pathways-container{
+.pathways-container {
     font-family: "Manrope";
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 100px;
-  }
+    gap: 30px;
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
 
-  .pathway{
-    width: 600px;
-  }
+.pathway {
+    width: 100%;
+    max-width: 600px;
+}
 
-  .pathway strong{
-    font-family: "Orbitron";
-  }
+.pathway h3 {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: #FF6500;
+    margin-bottom: 15px;
+}
+
+/* Responsive Media Queries */
+@media (min-width: 992px) {
+    .pathways-container {
+        flex-direction: row;
+        gap: 50px;
+    }
+    
+    .glass-box {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .pathways-container {
+        gap: 100px;
+    }
+}

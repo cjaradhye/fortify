@@ -1,86 +1,117 @@
-.fancy{
-    color: #00CFFF;
-    /* animation: glow 1s infinite alternate; */
+.fancy {
+  color: #00CFFF;
 }
 
-.section{
-    width: 100vw;
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.section {
+  width: 100vw;
+  min-height: 800px;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  text-align: left;
 }
 
-h3{
-    font-family: "Orbitron";
-    font-size: 3rem;
-    color: #FF6500;
+h3 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #FF6500;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .scan-container {
-    position: relative;
-    width: 600px;
-    background: #e5e5e5;
-    color: #000;
-    padding: 20px;
-    font-family: monospace;
-    font-size: 14px;
-    border-radius: 20px;
-    /* border: 2px solid #00ff99; */
-    /* box-shadow: 0 0 10px rgba(0, 255, 153, 0.5); */
-    overflow: hidden;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+  position: relative;
+  width: 85vw;
+  max-width: 600px;
+  background: #e5e5e5;
+  color: #000;
+  padding: 1.5rem;
+  font-family: monospace;
+  font-size: 0.875rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+}
+
+.code-box {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: #e5e5e5;
+  height: 300px;
+  overflow-y: auto;
+  width: auto;
+}
+
+.scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: slideIn 1s ease-in-out forwards;
+}
+
+.safe-badge {
+  color: #e5e5e5;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: bold;
+  background: #4CAF50;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  animation: glow 1s infinite alternate;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
   }
-  
-  .code-box {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    background-color: #e5e5e5;
-    height: 300px;
+  to {
+    transform: translateY(0);
   }
-  
-  /* Overlay effect */
-  .scan-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: slideIn 1s ease-in-out forwards;
-  }
-  
-  .safe-badge {
-    color: #e5e5e5;
-    font-size: 24px;
-    font-weight: bold;
+}
+
+@keyframes glow {
+  from {
     background: #4CAF50;
-    padding: 10px 20px;
-    border-radius: 5px;
-    /* box-shadow: 0 0 10px rgba(0, 255, 153, 0.8); */
-    animation: glow 1s infinite alternate;
   }
-  
-  /* Animations */
-  @keyframes slideIn {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
+  to {
+    background: #265928;
   }
-  
-  @keyframes glow {
-    from {
-      background: #4CAF50;
-    }
-    to {
-      background: #265928;
-    }
+}
+
+/* RESPONSIVE TWEAKS */
+@media (max-width: 480px) {
+  .code-box {
+    height: 250px;
+    font-size: 0.75rem;
   }
-  
+
+  .scan-container {
+    padding: 1rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .section {
+    padding: 2rem 1rem;
+  }
+
+  .scan-container {
+    padding: 1rem;
+  }
+
+  .safe-badge {
+    padding: 0.5rem 1rem;
+  }
+}
+
