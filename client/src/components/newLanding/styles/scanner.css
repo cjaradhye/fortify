@@ -4,8 +4,7 @@
 
 .section {
   width: 100vw;
-  min-height: 800px;
-  padding: 2rem 1rem;
+  padding: 5rem 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,6 +25,7 @@ h3 {
   position: relative;
   width: 85vw;
   max-width: 600px;
+  min-height: 400px;
   background: #e5e5e5;
   color: #000;
   padding: 1.5rem;
@@ -103,7 +103,8 @@ h3 {
 
 @media (max-width: 768px) {
   .section {
-    padding: 2rem 1rem;
+    min-height: 400px;
+    margin: 1rem 0;
   }
 
   .scan-container {
