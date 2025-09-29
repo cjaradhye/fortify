@@ -1,16 +1,10 @@
 const path = require('path');
 const fs = require('fs');
 const { ethers } = require('ethers');
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // remove when setting for production
-// Try multiple paths to find .env file
-const envPaths = [
-    path.resolve(__dirname, '../../.env'),      // Most likely location
-    path.resolve(__dirname, '../../../.env'),   // Alternative location
-    path.resolve(process.cwd(), '.env'),        // Current working directory
-    path.resolve(__dirname, '../../../../.env'), // Just in case
-];
-
-
+// Load .env ONLY if not in Docker
+if (!process.env.DOCKER_ENV) {
+    require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+}
 let envFound = false;
 for (const envPath of envPaths) {
     console.log(`   Checking: ${envPath}`);

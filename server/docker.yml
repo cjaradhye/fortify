@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - INFURA_RPC_URL=${INFURA_RPC_URL}      # ← Reads from .env
+      - PRIVATE_KEY=${PRIVATE_KEY}            # ← Reads from .env
+      - ETHERSCAN_API_KEY=${ETHERSCAN_API_KEY}  # ← Reads from .env
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - RISK_THRESHOLD=${RISK_THRESHOLD:-50}
+    volumes:
+      - ./server/temp:/app/temp
+      - ./server/blockchain:/app/blockchain
+    restart: unless-stopped

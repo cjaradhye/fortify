@@ -3,13 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const axios = require("axios");
 const { ethers } = require("ethers");
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // remove when setting for production
-const envPaths = [
-    path.resolve(__dirname, '../.env'),          // server/.env
-    path.resolve(__dirname, '../../.env'),       // project root/.env
-    path.resolve(process.cwd(), '.env'),         // Current working directory
-];
-
+if (!process.env.DOCKER_ENV) {
+    require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+}
 
 if (!process.env.INFURA_RPC_URL) {
     throw new Error('INFURA_RPC_URL is required but not found in environment variables');
