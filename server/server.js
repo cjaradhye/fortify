@@ -70,7 +70,6 @@ const io = new Server(server, {
     pingInterval: 25000,
     path: '/socket.io/',
     serveClient: false,
-    transports: isProduction ? ['websocket', 'polling'] : ['websocket', 'polling']
 });
 
 // Enhanced middleware for production
@@ -101,7 +100,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Health check for Render
-app.get('/health', (req, res) => {
+app.get('/api/health', (req, res) => {
     res.status(200).json({
         status: 'OK',
         timestamp: new Date().toISOString(),
@@ -351,7 +350,7 @@ app.get('/', (req, res) => {
             },
             utility: {
                 'POST /fetch-contract': 'Legacy contract analysis',
-                'GET /health': 'System health check',
+                'GET /api/health': 'System health check',
                 'GET /ping': 'Simple ping endpoint',
                 'GET /': 'This documentation'
             }
@@ -409,7 +408,7 @@ app.use((req, res) => {
         availableEndpoints: {
             newContracts: ['POST /api/deploy/*'],
             existingContracts: ['POST /api/risk/*'],
-            utility: ['GET /health', 'GET /ping', 'GET /']
+            utility: ['GET /api/health', 'GET /ping', 'GET /']
         }
     });
 });

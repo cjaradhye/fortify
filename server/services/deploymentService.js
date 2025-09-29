@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { ethers } = require('ethers');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // remove when setting for production
 // Try multiple paths to find .env file
 const envPaths = [
     path.resolve(__dirname, '../../.env'),      // Most likely location

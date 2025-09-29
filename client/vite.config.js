@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    port:5173,
     sourcemap: false,
     rollupOptions: {
       output: {

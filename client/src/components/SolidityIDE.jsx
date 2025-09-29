@@ -13,13 +13,21 @@ const SolidityIDE = () => {
     const textareaRef = useRef(null);
     const lineNumbersRef = useRef(null);
 
-    // FIXED: Consistent API URL function (same as ContractFetcher)
-    const getApiUrl = () => {
-        if (import.meta.env.PROD) {
-            return import.meta.env.VITE_API_URL || 'https://fortify-qwmj.onrender.com';
-        }
+  const getApiUrl = () => {
+    // Check if we're in development mode
+    const isDevelopment = import.meta.env.MODE === 'development' || 
+                         window.location.hostname === 'localhost' ||
+                         window.location.hostname === '127.0.0.1';
+    
+    if (isDevelopment) {
+        // Always use localhost in development
         return 'http://localhost:3000';
-    };
+    }
+    
+    // Use production URL in production
+    return import.meta.env.VITE_API_URL || 'https://fortify-qwmj.onrender.com';
+};
+
 
     const updateLineNumbers = () => {
         const lines = code.split('\n').length;

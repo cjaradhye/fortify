@@ -1,12 +1,11 @@
 // server/services/riskAssessmentService.js
-require("dotenv").config();
 const { ethers } = require("ethers");
 const fs = require('fs');
 const path = require('path');
-
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // remove when setting for production
 const INFURA_RPC_URL = process.env.INFURA_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const RISK_THRESHOLD = process.env.RISK_THRESHOLD || 7.0;
+const RISK_THRESHOLD = process.env.RISK_THRESHOLD || 60;
 
 async function assessAndProtectContract(contractAddress, riskScore, mlAnalysis) {
     try {

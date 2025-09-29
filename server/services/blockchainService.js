@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const axios = require("axios");
 const { ethers } = require("ethers");
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // remove when setting for production
 const envPaths = [
     path.resolve(__dirname, '../.env'),          // server/.env
     path.resolve(__dirname, '../../.env'),       // project root/.env
