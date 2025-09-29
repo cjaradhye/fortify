@@ -5,7 +5,7 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../../.env') }); // remove when setting for production
 const INFURA_RPC_URL = process.env.INFURA_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const RISK_THRESHOLD = process.env.RISK_THRESHOLD || 60;
+const RISK_THRESHOLD =  50;
 
 async function assessAndProtectContract(contractAddress, riskScore, mlAnalysis) {
     try {
@@ -13,7 +13,7 @@ async function assessAndProtectContract(contractAddress, riskScore, mlAnalysis) 
         console.log(`📊 Risk Score: ${riskScore}`);
         console.log(`⚖️ Threshold: ${RISK_THRESHOLD}`);
         
-        // 🚨 MAIN THRESHOLD COMPARISON LOGIC
+      
         if (riskScore >= RISK_THRESHOLD) {
             console.log(`🚨 HIGH RISK DETECTED! Score ${riskScore} >= ${RISK_THRESHOLD}`);
             console.log(`🛡️ Deploying SecurityProxy for protection...`);
@@ -21,9 +21,7 @@ async function assessAndProtectContract(contractAddress, riskScore, mlAnalysis) 
             const proxyAddress = await deploySecurityProxy(contractAddress);
             
             if (proxyAddress) {
-                // Log the deployment
                 await logDeployment(contractAddress, proxyAddress, riskScore, mlAnalysis);
-                
                 return {
                     action: 'PROTECTED',
                     riskScore,
@@ -57,7 +55,6 @@ async function deploySecurityProxy(targetContractAddress) {
         const provider = new ethers.JsonRpcProvider(INFURA_RPC_URL);
         const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 
-        // Load SecurityProxy contract artifact
         const contractPath = path.join(__dirname, '../blockchain/artifacts/contracts/securityProxy.sol/SecurityProxy.json');
         
         if (!fs.existsSync(contractPath)) {

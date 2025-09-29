@@ -14,9 +14,7 @@ const ContractFetcher = () => {
     const [protectionResult, setProtectionResult] = useState(null);
     const lineNumbersRef = useRef(null);
 
-    // MOVED OUTSIDE - Make getApiUrl available to all functions
    const getApiUrl = () => {
-    // Check if we're in development mode
     const isDevelopment = import.meta.env.MODE === 'development' || 
                          window.location.hostname === 'localhost' ||
                          window.location.hostname === '127.0.0.1';
@@ -156,7 +154,6 @@ The SecurityProxy will intercept and validate all transactions to prevent exploi
 
                     toast.success(`SecurityProxy deployed! Use address: ${data.assessment.proxyAddress.substring(0, 10)}...`);
                 } else {
-                    // LOW RISK - No protection needed
                     setSolidityCode(`✅ CONTRACT IS SAFE - NO PROTECTION NEEDED
 
 === SECURITY ANALYSIS ===
@@ -245,27 +242,27 @@ This contract appears to be secure and can be used safely.
                         <h6>Security Analysis Results</h6>
                     </div>
                     <pre style={{ padding: '15px', background: '#f5f5f5', borderRadius: '5px' }}>
-                        <p><strong>Risk Score:</strong> {riskScore}</p>
-                        <p><strong>Interpretation:</strong> {interpretation}</p>
+                        <p style={{ color: 'black' }}><strong>Risk Score:</strong> {riskScore}</p>
+                        <p style={{ color: 'black' }}><strong>Interpretation:</strong> {interpretation}</p>
                         
                         {protectionResult && (
                             <div style={{ marginTop: '15px', padding: '10px', background: '#e8f5e8', borderRadius: '5px' }}>
-                                <p><strong>🛡️ PROTECTION STATUS:</strong> {protectionResult.action}</p>
-                                <p><strong>📍 SecurityProxy Address:</strong></p>
-                                <p style={{ fontFamily: 'monospace', fontSize: '12px', wordBreak: 'break-all' }}>
+                                <p style={{ color: 'black' }}><strong>🛡️ PROTECTION STATUS:</strong> {protectionResult.action}</p>
+                                <p style={{ color: 'black' }}><strong>📍 SecurityProxy Address:</strong></p>
+                                <p style={{ fontFamily: 'monospace', fontSize: '12px', wordBreak: 'break-all' ,color:'black' }}>
                                     {protectionResult.proxyAddress}
                                 </p>
-                                <p><strong>Message:</strong> {protectionResult.message}</p>
+                                <p style={{ color: 'black' }}><strong>Message:</strong> {protectionResult.message}</p>
                             </div>
                         )}
 
                         {analysisResult && analysisResult.vulnerabilities && analysisResult.vulnerabilities.length > 0 && (
                             <div style={{ marginTop: '15px' }}>
-                                <p><strong>Vulnerabilities Found:</strong> {analysisResult.vulnerabilities.length}</p>
-                                <p><strong>Summary:</strong></p>
-                                <p>Critical: {analysisResult.securityAnalysis?.summary?.critical || 0}</p>
-                                <p>High: {analysisResult.securityAnalysis?.summary?.high || 0}</p>
-                                <p>Medium: {analysisResult.securityAnalysis?.summary?.medium || 0}</p>
+                                <p style={{ color: 'black' }}><strong>Vulnerabilities Found:</strong> {analysisResult.vulnerabilities.length}</p>
+                                <p style={{ color: 'black' }}><strong>Summary:</strong></p>
+                                <p style={{ color: 'black' }}>Critical: {analysisResult.securityAnalysis?.summary?.critical || 0}</p>
+                                <p style={{ color: 'black' }}>High: {analysisResult.securityAnalysis?.summary?.high || 0}</p>
+                                <p style={{ color: 'black' }}>Medium: {analysisResult.securityAnalysis?.summary?.medium || 0}</p>
                             </div>
                         )}
                     </pre>
@@ -283,7 +280,7 @@ This contract appears to be secure and can be used safely.
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
     );
 };
 
