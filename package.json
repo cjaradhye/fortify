@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "helmet": "^8.1.0"
+  }
+}

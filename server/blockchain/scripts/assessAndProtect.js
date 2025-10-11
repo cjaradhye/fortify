@@ -1,14 +1,13 @@
 require("dotenv").config({ path: '../../../.env' });
+
 const { ethers } = require("ethers");
 const fs = require('fs');
 
 const INFURA_RPC_URL = process.env.INFURA_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
-async function deployToSepolia(targetContractAddress = "0xbE2c4bD09593fD057CF24a4e54AF354822F8550e") {
+async function deployToSepolia(targetContractAddress = "0xC226600554c4603133fD90d694Eb449d9e203B8c") {
     try {
-        console.log("🚀 FORCING deployment to Sepolia network...\n");
-
         const provider = new ethers.JsonRpcProvider(INFURA_RPC_URL);
         const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
 

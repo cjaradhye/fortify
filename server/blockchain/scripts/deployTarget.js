@@ -1,4 +1,3 @@
-
 const hre = require("hardhat");
 
 async function main() {
@@ -9,8 +8,9 @@ async function main() {
 
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying with account: ${deployer.address}`);
-  
-  const SimpleContract = await ethers.getContractFactory("SimpleStorage2");
+ const SimpleContract = await ethers.getContractFactory(
+  "contracts/payable.sol:SimpleStorage2"
+);
   const simpleContract = await SimpleContract.deploy();
   
   await simpleContract.waitForDeployment();

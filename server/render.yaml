@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: smart-contract-security-backend
+    runtime: node
+    plan: starter
+    buildCommand: |
+      npm install
+      pip install slither-analyzer
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: FRONTEND_URL
+        sync: false
+      - key: INFURA_RPC_URL
+        sync: false
+      - key: PRIVATE_KEY
+        sync: false
+      - key: ETHERSCAN_API_KEY
+        sync: false
+      - key: RISK_THRESHOLD
+        value: 7.0

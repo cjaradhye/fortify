@@ -7,5 +7,14 @@
     "deploymentTx": "0x0eb5481f83df3bf54b2b0c85fcf6f2a1985161dac0188116cb33ec975ce1fdc0",
     "timestamp": "2025-07-26T22:04:36.581Z",
     "status": "DEPLOYED_TO_SEPOLIA"
+  },
+  {
+    "originalContract": "0xC226600554c4603133fD90d694Eb449d9e203B8c",
+    "proxyContract": "0x608f44F2967e6b34fc438f5B497388Bf489BB694",
+    "network": "sepolia",
+    "chainId": 11155111,
+    "deploymentTx": "0xb5b2427c08cd6dcaf521ca45cfbb8c81afc357fdd9231bee721dda5c533d6d68",
+    "timestamp": "2025-08-17T08:52:26.186Z",
+    "status": "DEPLOYED_TO_SEPOLIA"
   }
 ]

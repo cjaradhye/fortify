@@ -1,0 +1,62 @@
+[
+  {
+    "originalContract": "0xC226600554c4603133fD90d694Eb449d9e203B8c",
+    "proxyContract": "0xc16fA18537EB37033e04ce1d9761a35b594dbecd",
+    "riskScore": 64,
+    "threshold": "60",
+    "mlAnalysis": {
+      "vulnerabilities": 2
+    },
+    "network": "sepolia",
+    "timestamp": "2025-09-14T13:29:13.914Z",
+    "status": "AUTO_DEPLOYED"
+  },
+  {
+    "originalContract": "0xC226600554c4603133fD90d694Eb449d9e203B8c",
+    "proxyContract": "0xFc925DF02F7b23e014b6A460cFF2f828067bA7Df",
+    "riskScore": 64,
+    "threshold": "60",
+    "mlAnalysis": {
+      "vulnerabilities": 2
+    },
+    "network": "sepolia",
+    "timestamp": "2025-09-14T18:29:34.752Z",
+    "status": "AUTO_DEPLOYED"
+  },
+  {
+    "originalContract": "0x7bFF5378f618297Cc2c9E38199645C4E820cfFD9",
+    "proxyContract": "0x91aD4F718584e35A4E5c62fdb96418E040392eb7",
+    "riskScore": 64,
+    "threshold": "60",
+    "mlAnalysis": {
+      "vulnerabilities": 2
+    },
+    "network": "sepolia",
+    "timestamp": "2025-09-26T11:02:24.856Z",
+    "status": "AUTO_DEPLOYED"
+  },
+  {
+    "originalContract": "0x7bFF5378f618297Cc2c9E38199645C4E820cfFD9",
+    "proxyContract": "0xFE286c41700d680201c9523dd5DB0D0B9531A0DE",
+    "riskScore": 64,
+    "threshold": "60",
+    "mlAnalysis": {
+      "vulnerabilities": 2
+    },
+    "network": "sepolia",
+    "timestamp": "2025-09-26T11:19:48.184Z",
+    "status": "AUTO_DEPLOYED"
+  },
+  {
+    "originalContract": "0x7bFF5378f618297Cc2c9E38199645C4E820cfFD9",
+    "proxyContract": "0x67810421De06d61cAE9E6F653D9fa907c7f291D9",
+    "riskScore": 64,
+    "threshold": 50,
+    "mlAnalysis": {
+      "vulnerabilities": 2
+    },
+    "network": "sepolia",
+    "timestamp": "2025-09-29T16:46:26.132Z",
+    "status": "AUTO_DEPLOYED"
+  }
+]
